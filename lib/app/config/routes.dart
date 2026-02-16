@@ -1,0 +1,19 @@
+import 'package:go_router/go_router.dart';
+import 'package:mobile_univesp_pi3/presentation/screens/home_page.dart';
+import 'package:mobile_univesp_pi3/presentation/screens/register_dialysis_page.dart';
+
+final routes = GoRouter(
+  initialLocation: '/home',
+  routes: [
+    GoRoute(
+      path: '/home',
+      name: 'home',
+      builder: (context, state) => const Homepage(),
+    ),
+    GoRoute(
+      path: '/registerDialysis',
+      name: 'registerDialysis',
+      builder: (context, state) => RegisterDialysisPage(),
+    ),
+  ],
+);
