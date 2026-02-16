@@ -9,8 +9,8 @@ class UltrafiltrationField extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextFormField(
       controller: controller,
-      keyboardType: TextInputType.number,
-      decoration: const InputDecoration(labelText: 'NS'),
+      keyboardType: TextInputType.text,
+      decoration: const InputDecoration(labelText: 'N/S'),
     );
   }
 }

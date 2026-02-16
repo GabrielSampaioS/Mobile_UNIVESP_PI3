@@ -9,7 +9,7 @@ class EndTimeField extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextFormField(
       controller: controller,
-      keyboardType: TextInputType.number,
+      keyboardType: TextInputType.datetime,
       decoration: const InputDecoration(labelText: 'Hora que acabou'),
     );
   }

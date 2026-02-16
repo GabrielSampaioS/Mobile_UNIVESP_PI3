@@ -1,6 +1,7 @@
 //import 'package:db_projeto/app/config/theme_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile_univesp_pi3/app/config/routes.dart';
+import 'package:mobile_univesp_pi3/app/config/theme_manager.dart';
 
 class MyApp extends StatefulWidget {
   const MyApp({super.key});
@@ -18,6 +19,7 @@ class _MyAppState extends State<MyApp> {
       routeInformationProvider: routes.routeInformationProvider,
 
       debugShowCheckedModeBanner: false,
+      theme: ThemeManager.lightTheme,
     );
   }
 }

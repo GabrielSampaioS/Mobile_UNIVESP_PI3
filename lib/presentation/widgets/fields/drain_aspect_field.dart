@@ -9,7 +9,7 @@ class DrainAspectField extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextFormField(
       controller: controller,
-      keyboardType: TextInputType.number,
+      keyboardType: TextInputType.text,
       decoration: const InputDecoration(labelText: 'Aspecto'),
     );
   }

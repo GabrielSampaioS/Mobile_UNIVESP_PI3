@@ -10,7 +10,7 @@ class BagConcentrationField extends StatelessWidget {
     return TextFormField(
       controller: controller,
       keyboardType: TextInputType.number,
-      decoration: const InputDecoration(labelText: 'COncentração'),
+      decoration: const InputDecoration(labelText: 'Concentração %'),
     );
   }
 }
