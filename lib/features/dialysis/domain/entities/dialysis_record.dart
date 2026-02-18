@@ -3,12 +3,8 @@ import '../value_objects/cycles.dart';
 import '../value_objects/ultrafiltration.dart';
 import '../value_objects/urine_volume.dart';
 import '../value_objects/dialysis_time.dart';
-import '../value_objects/glucose_concentration.dart';
 
-enum DrainAspect {
-  clear,
-  blood,
-}
+enum DrainAspect { clear, blood }
 
 class DialysisRecord {
   final DateTime date;
@@ -17,7 +13,7 @@ class DialysisRecord {
   final DialysisTime endTime;
   final Cycles cycles;
   final double initialDrainage;
-  final GlucoseConcentration glucoseConcentration;
+  /*final GlucoseConcentration glucoseConcentration;*/
   final Ultrafiltration ultrafiltration;
   final DrainAspect drainAspect;
   final UrineVolume urineVolume;
@@ -29,7 +25,7 @@ class DialysisRecord {
     required this.endTime,
     required this.cycles,
     required this.initialDrainage,
-    required this.glucoseConcentration,
+    /*required this.glucoseConcentration,*/
     required this.ultrafiltration,
     required this.drainAspect,
     required this.urineVolume,
@@ -42,7 +38,7 @@ class DialysisRecord {
     required DialysisTime endTime,
     required Cycles cycles,
     required double initialDrainage,
-    required GlucoseConcentration glucoseConcentration,
+    /*required GlucoseConcentration glucoseConcentration,*/
     required Ultrafiltration ultrafiltration,
     required DrainAspect drainAspect,
     required UrineVolume urineVolume,
@@ -64,13 +60,12 @@ class DialysisRecord {
       endTime: endTime,
       cycles: cycles,
       initialDrainage: initialDrainage,
-      glucoseConcentration: glucoseConcentration,
+      /*glucoseConcentration: glucoseConcentration,*/
       ultrafiltration: ultrafiltration,
       drainAspect: drainAspect,
       urineVolume: urineVolume,
     );
   }
 
-  Duration get totalDuration =>
-      endTime.value.difference(startTime.value);
+  Duration get totalDuration => endTime.value.difference(startTime.value);
 }

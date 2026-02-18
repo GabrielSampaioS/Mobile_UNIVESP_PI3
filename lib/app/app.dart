@@ -1,23 +1,18 @@
-//import 'package:db_projeto/app/config/theme_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile_univesp_pi3/app/config/routes.dart';
 import 'package:mobile_univesp_pi3/app/config/theme_manager.dart';
 
-class MyApp extends StatefulWidget {
+class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
   @override
-  State<MyApp> createState() => _MyAppState();
-}
+  Widget build(BuildContext context) {
+    final router = createRouter();
 
-class _MyAppState extends State<MyApp> {
-  @override
-  Widget build(BuildContext constext) {
     return MaterialApp.router(
-      routerDelegate: routes.routerDelegate,
-      routeInformationParser: routes.routeInformationParser,
-      routeInformationProvider: routes.routeInformationProvider,
-
+      routerDelegate: router.routerDelegate,
+      routeInformationParser: router.routeInformationParser,
+      routeInformationProvider: router.routeInformationProvider,
       debugShowCheckedModeBanner: false,
       theme: ThemeManager.lightTheme,
     );

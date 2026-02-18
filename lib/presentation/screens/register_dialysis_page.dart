@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:mobile_univesp_pi3/presentation/widgets/fields/cycles_field.dart';
-import 'package:mobile_univesp_pi3/presentation/widgets/fields/drain_aspect_field.dart';
-import 'package:mobile_univesp_pi3/presentation/widgets/fields/end_time_field.dart';
-import 'package:mobile_univesp_pi3/presentation/widgets/fields/initial_drainage_field.dart';
-import 'package:mobile_univesp_pi3/presentation/widgets/fields/start_time_field.dart';
-import 'package:mobile_univesp_pi3/presentation/widgets/fields/ultrafiltration_field.dart';
-import 'package:mobile_univesp_pi3/presentation/widgets/fields/urine_volume_field.dart';
-import 'package:mobile_univesp_pi3/presentation/widgets/fields/weight_field.dart';
-import 'package:mobile_univesp_pi3/presentation/widgets/fields/bag_concentration_field.dart';
+import 'package:provider/provider.dart';
+
+import 'package:mobile_univesp_pi3/features/dialysis/application/dialysis_controller.dart';
+import 'package:mobile_univesp_pi3/core/widgets/fields/cycles_field.dart';
+import 'package:mobile_univesp_pi3/core/widgets/fields/drain_aspect_field.dart';
+import 'package:mobile_univesp_pi3/core/widgets/fields/end_time_field.dart';
+import 'package:mobile_univesp_pi3/core/widgets/fields/initial_drainage_field.dart';
+import 'package:mobile_univesp_pi3/core/widgets/fields/start_time_field.dart';
+import 'package:mobile_univesp_pi3/core/widgets/fields/ultrafiltration_field.dart';
+import 'package:mobile_univesp_pi3/core/widgets/fields/urine_volume_field.dart';
+import 'package:mobile_univesp_pi3/core/widgets/fields/weight_field.dart';
+import 'package:mobile_univesp_pi3/core/widgets/fields/bag_concentration_field.dart';
 
 class RegisterDialysisPage extends StatefulWidget {
   const RegisterDialysisPage({super.key});
@@ -18,6 +21,24 @@ class RegisterDialysisPage extends StatefulWidget {
 
 class _RegisterDialysisPageState extends State<RegisterDialysisPage> {
   final _formKey = GlobalKey<FormState>();
+  bool isLoading = false;
+
+  final weightController = TextEditingController();
+  final bagConcentrationController = TextEditingController();
+  final cyclesController = TextEditingController();
+  final urineVolumeController = TextEditingController();
+  final ultrafiltrationController = TextEditingController();
+  final startTimeController = TextEditingController();
+  final initialDrainageController = TextEditingController();
+  final endTimeController = TextEditingController();
+  final drainAspectController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    // Se ciclos é sempre 4:
+    // cyclesController.text = '4';
+  }
 
   @override
   void dispose() {
@@ -33,95 +54,87 @@ class _RegisterDialysisPageState extends State<RegisterDialysisPage> {
     super.dispose();
   }
 
-  //teste
-
-  void showMessage(BuildContext context, String message) {
+  void showMessage(String message) {
     ScaffoldMessenger.of(
       context,
     ).showSnackBar(SnackBar(content: Text(message)));
   }
 
-  final weightController = TextEditingController();
-  final bagConcentrationController = TextEditingController();
-  final cyclesController = TextEditingController();
-  final urineVolumeController = TextEditingController();
-  final ultrafiltrationController = TextEditingController();
-  final startTimeController = TextEditingController();
-  final initialDrainageController = TextEditingController();
-  final endTimeController = TextEditingController();
-  final drainAspectController = TextEditingController();
+  Future<void> _save() async {
+    if (!_formKey.currentState!.validate()) return;
+
+    setState(() => isLoading = true);
+
+    try {
+      final controller = context.read<DialysisController>(); // ✅ Provider aqui
+
+      await controller.saveFromForm(
+        weight: weightController.text,
+        startTime: startTimeController.text,
+        endTime: endTimeController.text,
+        cycles: cyclesController.text,
+        ultrafiltration: ultrafiltrationController.text,
+        urineVolume: urineVolumeController.text,
+        drainAspect: drainAspectController.text,
+        initialDrainage: initialDrainageController.text,
+      );
+
+      showMessage("Registro salvo com sucesso!");
+      _clearFields();
+
+      // Se você quer voltar pra Home depois de salvar:
+      // if (mounted) Navigator.pop(context);
+
+      // Se quer ficar na tela e ir pro próximo item, dá pra focar no primeiro campo aqui.
+    } catch (e) {
+      showMessage("Erro: $e");
+    }
+
+    if (mounted) setState(() => isLoading = false);
+  }
+
+  void _clearFields() {
+    weightController.clear();
+    bagConcentrationController.clear();
+    cyclesController.clear();
+    urineVolumeController.clear();
+    ultrafiltrationController.clear();
+    startTimeController.clear();
+    initialDrainageController.clear();
+    endTimeController.clear();
+    drainAspectController.clear();
+  }
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
     return Scaffold(
-      appBar: AppBar(
-        elevation: 2,
-        toolbarHeight: 56,
+      appBar: AppBar(title: const Text('Informações da hemodiálise')),
+      body: Padding(
+        padding: const EdgeInsets.all(24),
+        child: Form(
+          key: _formKey,
+          child: ListView(
+            children: [
+              StartTimeField(controller: startTimeController),
+              EndTimeField(controller: endTimeController),
 
-        backgroundColor: theme.colorScheme.secondary,
-        title: Text(
-          'Informações da hemodiálise',
-          style: theme.textTheme.headlineMedium,
-        ),
-      ),
+              BagConcentrationField(controller: bagConcentrationController),
+              CyclesField(controller: cyclesController),
+              DrainAspectField(controller: drainAspectController),
+              InitialDrainageField(controller: initialDrainageController),
+              UltrafiltrationField(controller: ultrafiltrationController),
+              UrineVolumeField(controller: urineVolumeController),
+              WeightField(controller: weightController),
 
-      backgroundColor: theme.colorScheme.surface,
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(24, 12, 24, 12),
-          child: SizedBox(
-            child: ListView(
-              children: [
-                Form(
-                  key: _formKey,
-                  child: Column(
-                    children: [
-                      //CAMPOS
-                      const SizedBox(height: 10),
-                      BagConcentrationField(
-                        controller: bagConcentrationController,
-                      ),
-                      const SizedBox(height: 20),
+              const SizedBox(height: 12),
 
-                      CyclesField(controller: cyclesController),
-                      const SizedBox(height: 20),
-
-                      DrainAspectField(controller: drainAspectController),
-                      const SizedBox(height: 20),
-
-                      EndTimeField(controller: endTimeController),
-                      const SizedBox(height: 20),
-
-                      InitialDrainageField(
-                        controller: initialDrainageController,
-                      ),
-                      const SizedBox(height: 20),
-
-                      StartTimeField(controller: startTimeController),
-                      const SizedBox(height: 20),
-
-                      UltrafiltrationField(
-                        controller: ultrafiltrationController,
-                      ),
-                      const SizedBox(height: 20),
-
-                      UrineVolumeField(controller: urineVolumeController),
-                      const SizedBox(height: 20),
-
-                      WeightField(controller: weightController),
-                      const SizedBox(height: 20),
-
-                      ElevatedButton(
-                        onPressed: () => showMessage(context, 'Salvar'),
-                        child: const Text('Salvar'),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
+              isLoading
+                  ? const Center(child: CircularProgressIndicator())
+                  : ElevatedButton(
+                      onPressed: _save,
+                      child: const Text("Salvar"),
+                    ),
+            ],
           ),
         ),
       ),
