@@ -22,7 +22,6 @@ class _HomepageState extends State<Homepage> {
   @override
   void initState() {
     super.initState();
-    // ✅ carrega uma vez quando entra na Home
     Future.microtask(() => context.read<DialysisController>().load());
   }
 
@@ -58,11 +57,10 @@ class _HomepageState extends State<Homepage> {
               items: controller.records,
               onEdit: (item) async {
                 await context.push('/registerDialysis', extra: item);
-                // opcional: se sua tela de salvar já chama load() no controller, não precisa disso
+
                 await context.read<DialysisController>().load();
               },
               onDelete: (item) async {
-                // quando você implementar delete no controller:
                 // await context.read<DialysisController>().delete(item.id);
                 showMessage(context, 'Implementar excluir');
               },

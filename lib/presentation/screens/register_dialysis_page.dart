@@ -36,8 +36,6 @@ class _RegisterDialysisPageState extends State<RegisterDialysisPage> {
   @override
   void initState() {
     super.initState();
-    // Se ciclos é sempre 4:
-    // cyclesController.text = '4';
   }
 
   @override
@@ -66,7 +64,7 @@ class _RegisterDialysisPageState extends State<RegisterDialysisPage> {
     setState(() => isLoading = true);
 
     try {
-      final controller = context.read<DialysisController>(); // ✅ Provider aqui
+      final controller = context.read<DialysisController>(); // Provider 
 
       await controller.saveFromForm(
         weight: weightController.text,
@@ -82,10 +80,7 @@ class _RegisterDialysisPageState extends State<RegisterDialysisPage> {
       showMessage("Registro salvo com sucesso!");
       _clearFields();
 
-      // Se você quer voltar pra Home depois de salvar:
-      // if (mounted) Navigator.pop(context);
-
-      // Se quer ficar na tela e ir pro próximo item, dá pra focar no primeiro campo aqui.
+      // if (mounted) Navigator.pop(context); para voltar home
     } catch (e) {
       showMessage("Erro: $e");
     }

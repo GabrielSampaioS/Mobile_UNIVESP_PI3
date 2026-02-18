@@ -1,95 +1,130 @@
+
 # Dialysis Daily Tracker
 
-Aplicativo mobile desenvolvido em Flutter para registro diário de
-informações clínicas de pacientes em tratamento de diálise peritoneal.
+Aplicativo mobile desenvolvido em **Flutter** para registro diário de informações clínicas de pacientes em tratamento de **diálise peritoneal**.
 
-O objetivo do projeto é permitir o controle estruturado e seguro de
-dados clínicos, organizando as informações de forma clara para
-acompanhamento e análise médica.
+O objetivo do projeto é permitir o controle estruturado e seguro de dados clínicos, organizando as informações de forma clara para acompanhamento e análise médica.
 
-------------------------------------------------------------------------
+---
 
-# Objetivo do Projeto
+## Objetivo do Projeto
 
-Este projeto foi desenvolvido como parte de um trabalho acadêmico
-(UNIVESP -- PI3), com foco em:
+Este projeto foi desenvolvido como parte de um trabalho acadêmico (**UNIVESP -- PI3**), com foco em:
 
--   Desenvolvimento de aplicação mobile com banco de dados
--   Integração com API
--   Estrutura arquitetural organizada
--   Aplicação de boas práticas de desenvolvimento
--   Uso de princípios de engenharia de software
+- Desenvolvimento de aplicação mobile com banco de dados
+- Integração com API
+- Estrutura arquitetural organizada
+- Aplicação de boas práticas de desenvolvimento
+- Uso de princípios de engenharia de software
 
-------------------------------------------------------------------------
+---
 
-# Funcionalidades
+## Funcionalidades
 
-A aplicação foi estruturada para permitir a criação de formulários de
-maneira modular e escalável.
+A aplicação permite registrar informações diárias do tratamento, incluindo:
 
-Cada campo do formulário é um componente isolado, com sua própria
-responsabilidade e validação. Essa abordagem permite:
+- Horário de início e fim
+- Peso do paciente
+- Ciclos
+- Ultrafiltração
+- Volume de urina (24h)
+- Drenagem inicial
+- Aspecto drenado
+- Concentração da bolsa
 
--   Reutilização de componentes
--   Facilidade de manutenção
--   Atualização de campos sem impactar outros
--   Eliminação de validações duplicadas
--   Organização clara da camada de apresentação
+Os campos do formulário são modularizados em widgets separados, garantindo:
 
-Essa estrutura facilita a evolução do sistema conforme novas
-necessidades clínicas forem surgindo.
+- Reutilização de componentes
+- Facilidade de manutenção
+- Validação isolada por campo
+- Organização clara da camada de apresentação
 
-------------------------------------------------------------------------
+---
 
-# Arquitetura do Projeto
+## Arquitetura do Projeto
 
-O projeto segue uma organização baseada em separação de
-responsabilidades, inspirada em:
+O projeto segue separação de responsabilidades inspirado em:
 
--   Clean Architecture
--   DDD (Domain-Driven Design)
--   Princípios SOLID
+- Clean Architecture
+- DDD (Domain-Driven Design)
+- SOLID
 
-Estrutura inicial do projeto (podendo evoluir conforme novas
-funcionalidades forem adicionadas):
+### Estrutura atual do projeto
 
-    lib/
-     └── features/
-          └── dialysis/
-               ├── presentation/
-               │     ├── pages/
-               │     └── widgets/
-               │           └── fields/
-               │
-               ├── domain/
-               │     ├── entities/
-               │     ├── repositories/
-               │     └── usecases/
-               │
-               └── data/
-                     ├── models/
-                     ├── datasources/
-                     └── repositories/
+```bash
+lib/
+│   main.dart
+│
+├── app/
+│   ├── app.dart
+│   ├── config/
+│   │   ├── app_colors.dart
+│   │   ├── routes.dart
+│   │   └── theme_manager.dart
+│   └── model/
+│       └── dialysis_record.dart
+│
+├── core/
+│   ├── formatters/
+│   │   └── time_input_formatter.dart
+│   └── widgets/
+│       └── fields/
+│           ├── bag_concentration_field.dart
+│           ├── cycles_field.dart
+│           ├── drain_aspect_field.dart
+│           ├── end_time_field.dart
+│           ├── initial_drainage_field.dart
+│           ├── start_time_field.dart
+│           ├── ultrafiltration_field.dart
+│           ├── urine_volume_field.dart
+│           └── weight_field.dart
+│
+├── features/
+│   └── dialysis/
+│       ├── application/
+│       │   └── dialysis_controller.dart
+│       │
+│       ├── domain/
+│       │   ├── dialysis_repository.dart
+│       │   ├── entities/
+│       │   │   └── dialysis_record.dart
+│       │   ├── usecases/
+│       │   │   ├── get_all_dialysis_record.dart
+│       │   │   └── save_dialysis_record.dart
+│       │   └── value_objects/
+│       │       ├── cycles.dart
+│       │       ├── dialysis_time.dart
+│       │       ├── glucose_concentration.dart
+│       │       ├── ultrafiltration.dart
+│       │       ├── urine_volume.dart
+│       │       └── weight.dart
+│       │
+│       └── infrastructure/
+│           └── dialysis_repository_fake.dart
+│
+└── presentation/
+    └── screens/
+        ├── dialysis_list.dart
+        ├── home_page.dart
+        └── register_dialysis_page.dart
+```
 
-------------------------------------------------------------------------
+---
 
-# Conceitos Teóricos Aplicados no Projeto
+## Domain vs Model
 
-## Diferença entre Domain e Mode
 ### Model (Camada de Dados)
 
-Representa o formato de dados externo.
+Representa o formato de dados externo ou de persistência.
 
 Responsabilidades:
 
--   Conversão de JSON
--   Comunicação com API
--   Persistência no banco de dados
--   Mapeamento de dados
+- Conversão de dados
+- Mapeamento para banco/API
+- Persistência
+- Transporte de informações
 
-O Model pode mudar caso a API ou o banco de dados sejam alterados.
-
-------------------------------------------------------------------------
+---
 
 ### Domain (Camada de Negócio)
 
@@ -97,133 +132,91 @@ Representa a regra de negócio pura da aplicação.
 
 Responsabilidades:
 
--   Entidades do sistema
--   Regras de validação de negócio
--   Comportamentos do domínio
+- Entidades
+- Value Objects
+- Validações de domínio
+- Comportamentos do sistema
 
-O Domain só deve mudar se houver alteração nas regras de negócio.
+O Domain só deve mudar caso existam mudanças nas regras de negócio.
 
-Essa separação reduz acoplamento e aumenta a previsibilidade do sistema.
+---
 
-------------------------------------------------------------------------
-
-# Fluxo de Dados
+## Fluxo de Dados
 
 Fluxo principal:
 
-UI → UseCase → Repository → DataSource → API/Database
+```
+UI → Controller → UseCase → Repository → Infrastructure
+```
 
-Fluxo de retorno:
+Esse fluxo mantém a aplicação desacoplada e facilita a substituição da camada de persistência.
 
-API → Model → Mapper → Domain → UI
+---
 
-Essa organização mantém a camada de apresentação desacoplada da
-infraestrutura.
+## Persistência e Infraestrutura
 
-------------------------------------------------------------------------
+A arquitetura foi projetada seguindo princípios de desacoplamento, permitindo que a camada de infraestrutura possa ser substituída sem impacto na camada de domínio.
 
-# Aplicação dos Princípios SOLID
+Isso significa que a aplicação pode evoluir para utilizar outras fontes de dados, como:
 
-## S --- Single Responsibility Principle
+- SQLite
+- Hive
+- Firebase
+- API REST própria
 
-Cada classe possui apenas uma responsabilidade bem definida.
+A substituição da infraestrutura não exige alterações nas regras de negócio, pois o domínio depende apenas de **interfaces (repositórios)** e não de implementações concretas.
 
-## O --- Open/Closed Principle
+Essa abordagem garante flexibilidade, escalabilidade e facilidade de manutenção.
 
-Novos campos ou regras podem ser adicionados sem modificar código já
-existente.
+---
 
-## L --- Liskov Substitution Principle
+## Uso de DDD (Domain-Driven Design)
 
-Implementações de repositórios podem ser substituídas por mocks ou
-outras fontes de dados sem quebrar o sistema.
+O projeto aplica conceitos fundamentais de **Domain-Driven Design (DDD)**, mantendo o foco na modelagem clara do domínio da aplicação.
 
-## I --- Interface Segregation Principle
+Os principais elementos aplicados são:
 
-Interfaces são específicas para cada responsabilidade, evitando
-dependências desnecessárias.
+- **Entidades** — Representam objetos com identidade própria no sistema (ex: DialysisRecord).
+- **Value Objects** — Representam conceitos imutáveis com regras específicas (ex: Weight, Cycles, DialysisTime).
+- **Repositórios** — Interfaces que abstraem o acesso aos dados.
+- **Casos de Uso (UseCases)** — Representam ações específicas do sistema (ex: salvar registro, listar registros).
 
-## D --- Dependency Inversion Principle
+O objetivo é manter o **domínio isolado da infraestrutura**, garantindo que:
 
-A camada de domínio não depende de frameworks, banco de dados ou
-detalhes de infraestrutura.
+- Regras de negócio não dependam de banco de dados ou frameworks.
+- Mudanças tecnológicas não afetem a lógica central da aplicação.
+- O código permaneça organizado, previsível e escalável.
 
-------------------------------------------------------------------------
+Essa separação aumenta a clareza do sistema e reduz acoplamentos desnecessários.
 
-# Uso de DDD (Domain-Driven Design)
+---
 
-O projeto aplica conceitos como:
+## Tecnologias Utilizadas
 
--   Entidades
--   Value Objects
--   Repositórios
--   Casos de uso
+- Flutter
+- Dart
+- GoRouter
+- Provider
+- Clean Architecture
+- DDD
+- SOLID
 
-O foco principal é manter o domínio isolado da camada de infraestrutura,
-garantindo maior clareza e organização das regras de negócio.
+---
 
-------------------------------------------------------------------------
+## Evoluções Futuras
 
-# Camada de Presentation
+O projeto foi estruturado para permitir crescimento contínuo. Entre as evoluções planejadas estão:
 
-Responsável por:
+- Dashboard com gráficos para análise visual dos dados
+- Histórico filtrável por período
+- Exportação de relatórios (PDF/CSV)
+- Autenticação e controle de usuários
+- Armazenamento em nuvem
 
--   Telas
--   Formulários
--   Componentes reutilizáveis
--   Validação de entrada
+A arquitetura atual permite que essas funcionalidades sejam adicionadas sem comprometer a estrutura existente.
 
-Cada campo do formulário é um widget isolado, promovendo:
+---
 
--   Reutilização
--   Organização
--   Testabilidade
--   Facilidade de manutenção
+## Autor
 
-------------------------------------------------------------------------
-
-# Persistência
-
-A aplicação foi estruturada seguindo princípios SOLID, evitando
-acoplamento direto com banco de dados.
-
-Atualmente, para o projeto acadêmico, está sendo utilizado MongoDB.
-
-Entretanto, a arquitetura permite substituir facilmente a fonte de dados
-por:
-
--   SQLite
--   Hive
--   Firebase
--   API REST própria
-
-A troca da infraestrutura não impacta a camada de domínio.
-
-------------------------------------------------------------------------
-
-# Tecnologias Utilizadas
-
--   Flutter
--   Dart
--   Clean Architecture
--   DDD
--   SOLID
--   MongoDB
-
-------------------------------------------------------------------------
-
-# Evoluções Futuras
-
--   Dashboard com gráficos
--   Histórico filtrável por data
--   Exportação de relatórios
--   Integração hospitalar
--   Autenticação de usuários
--   Armazenamento em nuvem
-
-------------------------------------------------------------------------
-
-# Autor
-
-Gabriel Sampaio\
-Projeto acadêmico -- UNIVESP PI3
+Gabriel Sampaio  
