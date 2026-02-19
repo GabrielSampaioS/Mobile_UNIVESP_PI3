@@ -3,6 +3,10 @@ class GlucoseConcentration {
 
   GlucoseConcentration._(this.value);
 
-  static final onePointFive = GlucoseConcentration._(1.5);
-  static final twoPointFive = GlucoseConcentration._(2.5);
+  factory GlucoseConcentration(double value) {
+    if (value <= 0) {
+      throw Exception('Concentração deve ser maior que zero');
+    }
+    return GlucoseConcentration._(value);
+  }
 }

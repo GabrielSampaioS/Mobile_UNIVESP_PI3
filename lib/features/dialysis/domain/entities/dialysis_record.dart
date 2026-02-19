@@ -68,4 +68,20 @@ class DialysisRecord {
   }
 
   Duration get totalDuration => endTime.value.difference(startTime.value);
+
+  String debugFields() {
+    return '''
+      DialysisRecord(
+        date: $date,
+        weight: $weight,
+        startTime: $startTime,
+        endTime: $endTime,
+        cycles: $cycles,
+        initialDrainage: $initialDrainage,
+        ultrafiltration: $ultrafiltration,
+        drainAspect: $drainAspect,
+        urineVolume: $urineVolume,
+      )
+    ''';
+  }
 }

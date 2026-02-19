@@ -20,7 +20,7 @@ class DialysisList extends StatelessWidget {
       return const Center(child: Text('Nenhum registro salvo ainda.'));
     }
 
-    final df = DateFormat('dd/MM/yyyy');
+    final df = DateFormat('dd/MM/yy');
 
     return ListView.separated(
       padding: const EdgeInsets.all(12),
@@ -32,8 +32,12 @@ class DialysisList extends StatelessWidget {
         return Card(
           elevation: 1,
           child: ListTile(
-            title: Text('${df.format(item.date)} • ${item.startTime}–${item.endTime}'),
-            subtitle: Text('Peso: ${item.weight} kg • Ciclos: ${item.cycles}'),
+            title: Text(
+              '${df.format(item.date)} ${item.startTime}–${item.endTime}',
+            ),
+            subtitle: Text(
+              'Peso: ${item.weight.value} kg • Ciclos: ${item.cycles.value}',
+            ),
             trailing: Row(
               mainAxisSize: MainAxisSize.min,
               children: [

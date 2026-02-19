@@ -18,4 +18,10 @@ class DialysisTime {
 
     return DialysisTime._(DateTime(now.year, now.month, now.day, hour, minute));
   }
+  @override
+  String toString() {
+    final hour = value.hour.toString().padLeft(2, '0');
+    final minute = value.minute.toString().padLeft(2, '0');
+    return '$hour:$minute';
+  }
 }
