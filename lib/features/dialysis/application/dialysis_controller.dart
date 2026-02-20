@@ -1,8 +1,9 @@
 import 'package:flutter/foundation.dart';
 import 'package:mobile_univesp_pi3/features/dialysis/domain/entities/dialysis_record.dart';
+import 'package:mobile_univesp_pi3/features/dialysis/domain/usecases/delete_dialysis_record.dart';
 import 'package:mobile_univesp_pi3/features/dialysis/domain/usecases/save_dialysis_record.dart';
 import 'package:mobile_univesp_pi3/features/dialysis/domain/usecases/get_all_dialysis_record.dart';
-import 'package:mobile_univesp_pi3/features/dialysis/domain/usecases/update_dialysis_record%20copy.dart';
+import 'package:mobile_univesp_pi3/features/dialysis/domain/usecases/update_dialysis_record.dart';
 import 'package:mobile_univesp_pi3/features/dialysis/domain/value_objects/bag_concentration.dart';
 import 'package:mobile_univesp_pi3/features/dialysis/domain/value_objects/cycles.dart';
 import 'package:mobile_univesp_pi3/features/dialysis/domain/value_objects/dialysis_time.dart';
@@ -15,11 +16,13 @@ class DialysisController extends ChangeNotifier {
   final SaveDialysisRecord save;
   final GetAllDialysisRecord getAll;
   final UpdateDialysisRecord update;
+  final DeleteDialysisRecord delete;
 
   DialysisController({
     required this.save,
     required this.getAll,
     required this.update,
+    required this.delete
   });
 
   List<DialysisRecord> _records = [];

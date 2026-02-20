@@ -1,4 +1,4 @@
-class DialysisRecord {
+class DialysisRecordDto {
   final DateTime date;
 
   final String id;
@@ -16,7 +16,7 @@ class DialysisRecord {
 
   final double weight;
 
-  DialysisRecord({
+  DialysisRecordDto({
     required this.date,
     required this.id,
     required this.startTime,

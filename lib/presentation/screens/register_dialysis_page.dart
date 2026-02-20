@@ -3,15 +3,15 @@ import 'package:mobile_univesp_pi3/features/dialysis/domain/entities/dialysis_re
 import 'package:provider/provider.dart';
 
 import 'package:mobile_univesp_pi3/features/dialysis/application/dialysis_controller.dart';
-import 'package:mobile_univesp_pi3/core/widgets/fields/cycles_field.dart';
-import 'package:mobile_univesp_pi3/core/widgets/fields/drain_aspect_field.dart';
-import 'package:mobile_univesp_pi3/core/widgets/fields/end_time_field.dart';
-import 'package:mobile_univesp_pi3/core/widgets/fields/initial_drainage_field.dart';
-import 'package:mobile_univesp_pi3/core/widgets/fields/start_time_field.dart';
-import 'package:mobile_univesp_pi3/core/widgets/fields/ultrafiltration_field.dart';
-import 'package:mobile_univesp_pi3/core/widgets/fields/urine_volume_field.dart';
-import 'package:mobile_univesp_pi3/core/widgets/fields/weight_field.dart';
-import 'package:mobile_univesp_pi3/core/widgets/fields/bag_concentration_field.dart';
+import 'package:mobile_univesp_pi3/presentation/widgets/fields/cycles_field.dart';
+import 'package:mobile_univesp_pi3/presentation/widgets/fields/drain_aspect_field.dart';
+import 'package:mobile_univesp_pi3/presentation/widgets/fields/end_time_field.dart';
+import 'package:mobile_univesp_pi3/presentation/widgets/fields/initial_drainage_field.dart';
+import 'package:mobile_univesp_pi3/presentation/widgets/fields/start_time_field.dart';
+import 'package:mobile_univesp_pi3/presentation/widgets/fields/ultrafiltration_field.dart';
+import 'package:mobile_univesp_pi3/presentation/widgets/fields/urine_volume_field.dart';
+import 'package:mobile_univesp_pi3/presentation/widgets/fields/weight_field.dart';
+import 'package:mobile_univesp_pi3/presentation/widgets/fields/bag_concentration_field.dart';
 
 class RegisterDialysisPage extends StatefulWidget {
   final DialysisRecord? existing;

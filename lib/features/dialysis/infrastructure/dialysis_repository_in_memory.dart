@@ -1,7 +1,7 @@
 import 'package:mobile_univesp_pi3/features/dialysis/domain/dialysis_repository.dart';
 import 'package:mobile_univesp_pi3/features/dialysis/domain/entities/dialysis_record.dart';
 
-class DialysisRepositoryFake implements DialysisRepository {
+class DialysisRepositoryInMemory implements DialysisRepository {
   final List<DialysisRecord> _storage = [];
 
   @override
@@ -22,5 +22,11 @@ class DialysisRepositoryFake implements DialysisRepository {
       throw Exception('Registro não encontrado para atualizar.');
     }
     _storage[index] = record;
+  }
+  
+  @override
+  Future<void> delete(DialysisRecord record) {
+    // TODO: implement delete
+    throw UnimplementedError();
   }
 }
