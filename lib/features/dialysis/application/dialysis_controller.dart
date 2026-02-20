@@ -22,7 +22,7 @@ class DialysisController extends ChangeNotifier {
     required this.save,
     required this.getAll,
     required this.update,
-    required this.delete
+    required this.delete,
   });
 
   List<DialysisRecord> _records = [];
@@ -43,6 +43,11 @@ class DialysisController extends ChangeNotifier {
 
   Future<void> saveDialysisRecord({required DialysisRecord record}) async {
     await save(record);
+    await load();
+  }
+
+  Future<void> deleteDialysisRecord(DialysisRecord record) async {
+    await delete(record);
     await load();
   }
 

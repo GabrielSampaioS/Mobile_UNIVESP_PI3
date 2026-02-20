@@ -61,8 +61,10 @@ class _HomepageState extends State<Homepage> {
                 await context.read<DialysisController>().load();
               },
               onDelete: (item) async {
-                // await context.read<DialysisController>().delete(item.id);
-                showMessage(context, 'Implementar excluir');
+                await context.read<DialysisController>().deleteDialysisRecord(
+                  item,
+                );
+                showMessage(context, 'Registro Excluido');
               },
             ),
 

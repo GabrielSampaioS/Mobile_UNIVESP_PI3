@@ -23,10 +23,9 @@ class DialysisRepositoryInMemory implements DialysisRepository {
     }
     _storage[index] = record;
   }
-  
+
   @override
-  Future<void> delete(DialysisRecord record) {
-    // TODO: implement delete
-    throw UnimplementedError();
+  Future<void> delete(DialysisRecord record) async {
+    _storage.removeWhere((item) => item.id == record.id);
   }
 }
