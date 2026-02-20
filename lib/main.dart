@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:mobile_univesp_pi3/features/dialysis/domain/usecases/update_dialysis_record%20copy.dart';
 import 'package:provider/provider.dart';
 
 import 'package:mobile_univesp_pi3/app/app.dart';
@@ -13,6 +14,7 @@ void main() {
   final repository = DialysisRepositoryFake();
   final save = SaveDialysisRecord(repository);
   final getAll = GetAllDialysisRecord(repository);
+  final update = UpdateDialysisRecord(repository);
 
   runApp(
     MultiProvider(
@@ -21,14 +23,10 @@ void main() {
 
         // se seu DialysisController virar ChangeNotifier:
         ChangeNotifierProvider(
-          create: (_) => DialysisController(save: save, getAll: getAll)..load(),
+          create: (_) =>
+              DialysisController(save: save, getAll: getAll, update: update)
+                ..load(),
         ),
-
-        // ✅ Se seu DialysisController ainda NÃO for ChangeNotifier,
-        // use Provider normal:
-        // Provider(
-        //   create: (_) => DialysisController(save: save, getAll: getAll),
-        // ),
       ],
       child: const MyApp(),
     ),

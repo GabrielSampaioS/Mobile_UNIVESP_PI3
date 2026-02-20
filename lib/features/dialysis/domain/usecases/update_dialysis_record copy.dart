@@ -1,13 +1,12 @@
-
 import 'package:mobile_univesp_pi3/features/dialysis/domain/dialysis_repository.dart';
 import 'package:mobile_univesp_pi3/features/dialysis/domain/entities/dialysis_record.dart';
 
-class GetAllDialysisRecord {
+class UpdateDialysisRecord {
   final DialysisRepository repository;
 
-  GetAllDialysisRecord(this.repository);
+  UpdateDialysisRecord(this.repository);
 
-  Future<List<DialysisRecord>> call() {
-    return repository.getAll();
+  Future<void> call(DialysisRecord record) {
+    return repository.update(record);
   }
 }

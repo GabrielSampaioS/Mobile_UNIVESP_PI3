@@ -2,8 +2,11 @@ import 'package:flutter/foundation.dart';
 import 'package:mobile_univesp_pi3/features/dialysis/domain/entities/dialysis_record.dart';
 import 'package:mobile_univesp_pi3/features/dialysis/domain/usecases/save_dialysis_record.dart';
 import 'package:mobile_univesp_pi3/features/dialysis/domain/usecases/get_all_dialysis_record.dart';
+import 'package:mobile_univesp_pi3/features/dialysis/domain/usecases/update_dialysis_record%20copy.dart';
+import 'package:mobile_univesp_pi3/features/dialysis/domain/value_objects/bag_concentration.dart';
 import 'package:mobile_univesp_pi3/features/dialysis/domain/value_objects/cycles.dart';
 import 'package:mobile_univesp_pi3/features/dialysis/domain/value_objects/dialysis_time.dart';
+import 'package:mobile_univesp_pi3/features/dialysis/domain/value_objects/drain_aspect.dart';
 import 'package:mobile_univesp_pi3/features/dialysis/domain/value_objects/ultrafiltration.dart';
 import 'package:mobile_univesp_pi3/features/dialysis/domain/value_objects/urine_volume.dart';
 import 'package:mobile_univesp_pi3/features/dialysis/domain/value_objects/weight.dart';
@@ -11,8 +14,13 @@ import 'package:mobile_univesp_pi3/features/dialysis/domain/value_objects/weight
 class DialysisController extends ChangeNotifier {
   final SaveDialysisRecord save;
   final GetAllDialysisRecord getAll;
+  final UpdateDialysisRecord update;
 
-  DialysisController({required this.save, required this.getAll});
+  DialysisController({
+    required this.save,
+    required this.getAll,
+    required this.update,
+  });
 
   List<DialysisRecord> _records = [];
   List<DialysisRecord> get records => List.unmodifiable(_records);
@@ -35,7 +43,8 @@ class DialysisController extends ChangeNotifier {
     await load();
   }
 
-  Future<void> saveFromForm({
+  // CRIAR
+  Future<void> createFromForm({
     required String weight,
     required String startTime,
     required String endTime,
@@ -44,6 +53,7 @@ class DialysisController extends ChangeNotifier {
     required String urineVolume,
     required String drainAspect,
     required String initialDrainage,
+    required String bagConcentration,
   }) async {
     final record = DialysisRecord.create(
       date: DateTime.now(),
@@ -54,11 +64,40 @@ class DialysisController extends ChangeNotifier {
       ultrafiltration: Ultrafiltration(double.parse(ultrafiltration)),
       urineVolume: UrineVolume(double.parse(urineVolume)),
       initialDrainage: double.parse(initialDrainage),
-      drainAspect: drainAspect.toLowerCase() == 'blood'
-          ? DrainAspect.blood
-          : DrainAspect.clear,
+      drainAspect: DrainAspect(drainAspect.toLowerCase()),
+      bagConcentration: BagConcentration(double.parse(bagConcentration)),
     );
 
-    await saveDialysisRecord(record: record);
+    await save(record);
+    await load();
+  }
+
+  // ATUALIZAR
+  Future<void> updateFromForm({
+    required DialysisRecord existing,
+    required String weight,
+    required String startTime,
+    required String endTime,
+    required String cycles,
+    required String ultrafiltration,
+    required String urineVolume,
+    required String drainAspect,
+    required String initialDrainage,
+    required String bagConcentration,
+  }) async {
+    final updated = existing.copyWith(
+      weight: Weight(double.parse(weight)),
+      startTime: DialysisTime.fromString(startTime),
+      endTime: DialysisTime.fromString(endTime),
+      cycles: Cycles(int.parse(cycles)),
+      ultrafiltration: Ultrafiltration(double.parse(ultrafiltration)),
+      urineVolume: UrineVolume(double.parse(urineVolume)),
+      initialDrainage: double.parse(initialDrainage),
+      drainAspect: DrainAspect(drainAspect.toLowerCase()),
+      bagConcentration: BagConcentration(double.parse(bagConcentration)),
+    );
+
+    await update(updated);
+    await load();
   }
 }

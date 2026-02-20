@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobile_univesp_pi3/features/dialysis/domain/entities/dialysis_record.dart';
 import 'package:provider/provider.dart';
 
 import 'package:mobile_univesp_pi3/features/dialysis/application/dialysis_controller.dart';
@@ -13,7 +14,9 @@ import 'package:mobile_univesp_pi3/core/widgets/fields/weight_field.dart';
 import 'package:mobile_univesp_pi3/core/widgets/fields/bag_concentration_field.dart';
 
 class RegisterDialysisPage extends StatefulWidget {
-  const RegisterDialysisPage({super.key});
+  final DialysisRecord? existing;
+
+  const RegisterDialysisPage({super.key, this.existing});
 
   @override
   State<RegisterDialysisPage> createState() => _RegisterDialysisPageState();
@@ -36,6 +39,19 @@ class _RegisterDialysisPageState extends State<RegisterDialysisPage> {
   @override
   void initState() {
     super.initState();
+    final record = widget.existing;
+    if (record != null) {
+      startTimeController.text = record.startTime.toString();
+      endTimeController.text = record.endTime.toString();
+      weightController.text = record.weight.value.toString();
+      cyclesController.text = record.cycles.value.toString();
+      ultrafiltrationController.text = record.ultrafiltration.value.toString();
+      urineVolumeController.text = record.urineVolume.value.toString();
+      initialDrainageController.text = record.initialDrainage.toString();
+      drainAspectController.text = record.drainAspect.value;
+      bagConcentrationController.text = record.bagConcentration.value
+          .toString();
+    }
   }
 
   @override
@@ -64,40 +80,45 @@ class _RegisterDialysisPageState extends State<RegisterDialysisPage> {
     setState(() => isLoading = true);
 
     try {
-      final controller = context.read<DialysisController>(); // Provider 
+      final controller = context.read<DialysisController>(); // Provider
 
-      await controller.saveFromForm(
-        weight: weightController.text,
-        startTime: startTimeController.text,
-        endTime: endTimeController.text,
-        cycles: cyclesController.text,
-        ultrafiltration: ultrafiltrationController.text,
-        urineVolume: urineVolumeController.text,
-        drainAspect: drainAspectController.text,
-        initialDrainage: initialDrainageController.text,
-      );
+      if (widget.existing == null) {
+        //criar
+        await controller.createFromForm(
+          weight: weightController.text,
+          startTime: startTimeController.text,
+          endTime: endTimeController.text,
+          cycles: cyclesController.text,
+          ultrafiltration: ultrafiltrationController.text,
+          urineVolume: urineVolumeController.text,
+          drainAspect: drainAspectController.text,
+          initialDrainage: initialDrainageController.text,
+          bagConcentration: bagConcentrationController.text,
+        );
+      } else {
+        //Update TODO Gambiarram atualizar
+        await controller.updateFromForm(
+          existing: widget.existing!,
+          weight: weightController.text,
+          startTime: startTimeController.text,
+          endTime: endTimeController.text,
+          cycles: cyclesController.text,
+          ultrafiltration: ultrafiltrationController.text,
+          urineVolume: urineVolumeController.text,
+          drainAspect: drainAspectController.text,
+          initialDrainage: initialDrainageController.text,
+          bagConcentration: bagConcentrationController.text,
+        );
+      }
 
       showMessage("Registro salvo com sucesso!");
-      _clearFields();
 
-      // if (mounted) Navigator.pop(context); para voltar home
+      if (mounted) Navigator.pop(context);
     } catch (e) {
       showMessage("Erro: $e");
     }
 
     if (mounted) setState(() => isLoading = false);
-  }
-
-  void _clearFields() {
-    weightController.clear();
-    bagConcentrationController.clear();
-    cyclesController.clear();
-    urineVolumeController.clear();
-    ultrafiltrationController.clear();
-    startTimeController.clear();
-    initialDrainageController.clear();
-    endTimeController.clear();
-    drainAspectController.clear();
   }
 
   @override
