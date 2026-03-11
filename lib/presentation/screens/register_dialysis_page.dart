@@ -123,8 +123,12 @@ class _RegisterDialysisPageState extends State<RegisterDialysisPage> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Scaffold(
-      appBar: AppBar(title: const Text('Informações da hemodiálise')),
+      appBar: AppBar(
+        title: const Text('Informações da hemodiálise'),
+        backgroundColor: theme.colorScheme.secondary,
+      ),
       body: Padding(
         padding: const EdgeInsets.all(24),
         child: Form(
